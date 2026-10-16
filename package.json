@@ -1,0 +1,14 @@
+{
+  "name": "ppl-content-viewer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Minimal portfolio-style website to list, read and compile PPL lab C/C++ codes",
+  "scripts": {
+    "dev": "concurrently -n server,client -c yellow,cyan \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
+    "build": "npm run build --prefix client",
+    "start": "node server/index.js"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
