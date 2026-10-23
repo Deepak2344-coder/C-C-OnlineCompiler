@@ -15,8 +15,7 @@ on:
   workflow_dispatch: # lets you trigger it manually from the Actions tab
 
 env:
-  # CHANGE THIS if you named the Render service something else.
-  SITE_URL: "https://ppl-content-viewer.onrender.com"
+  SITE_URL: "https://ppl-lab-contents.onrender.com"
 
 jobs:
   ping:
