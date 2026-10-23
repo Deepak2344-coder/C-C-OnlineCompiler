@@ -1,0 +1,30 @@
+name: Keep Render awake
+
+# Render's free tier sleeps a web service after ~15 minutes with no traffic,
+# so the first visitor pays a ~50 s cold start. This pings the service every
+# 5 minutes, which keeps it awake indefinitely at no cost.
+#
+# The ping hits /api/status on purpose: that endpoint actually executes
+# `gcc --version` and `g++ --version`, so this doubles as a real check that
+# the compilers the site depends on are still present in the container.
+# If a deploy ever loses them, this job turns red.
+
+on:
+  schedule:
+    - cron: "*/5 * * * *" # every 5 min (Render sleeps at 15, so stay well under)
+  workflow_dispatch: # lets you trigger it manually from the Actions tab
+
+env:
+  # CHANGE THIS if you named the Render service something else.
+  SITE_URL: "https://ppl-content-viewer.onrender.com"
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wake the service
+        run: |
+          echo "Pinging ${SITE_URL}/api/status ..."
+          curl -fsS --max-time 45 "${SITE_URL}/api/status"
+          echo ""
+          echo "Service is awake."
